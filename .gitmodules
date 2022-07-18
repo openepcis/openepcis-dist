@@ -1,0 +1,9 @@
+[submodule "modules/openepcis-bom"]
+	path = modules/openepcis-bom
+	url = https://github.com/openepcis/openepcis-bom.git
+[submodule "modules/openepcis-epc-digitallink-translator"]
+	path = modules/openepcis-epc-digitallink-translator
+	url = https://github.com/openepcis/openepcis-epc-digitallink-translator.git
+[submodule "modules/openepcis-event-hash-generator"]
+	path = modules/openepcis-event-hash-generator
+	url = https://github.com/openepcis/openepcis-event-hash-generator.git
