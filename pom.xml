@@ -73,4 +73,12 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <!-- sonatype snapshots -->
+        <repository>
+            <id>sonatype-staging</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+
 </project>
