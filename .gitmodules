@@ -13,3 +13,6 @@
 [submodule "modules/openepcis-event-hash-generator-service"]
 	path = modules/openepcis-event-hash-generator-service
 	url = https://github.com/openepcis/openepcis-event-hash-generator-service.git
+[submodule "modules/openepcis-event-hash-generator-utility"]
+	path = modules/openepcis-event-hash-generator-utility
+	url = https://github.com/openepcis/openepcis-event-hash-generator-utility.git
