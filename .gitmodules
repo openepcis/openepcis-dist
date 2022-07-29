@@ -10,6 +10,3 @@
 [submodule "modules/openepcis-model-rest"]
 	path = modules/openepcis-model-rest
 	url = https://github.com/openepcis/openepcis-model-rest.git
-[submodule "modules/openepcis-event-hash-generator-utility"]
-	path = modules/openepcis-event-hash-generator-utility
-	url = https://github.com/openepcis/openepcis-event-hash-generator-utility.git
