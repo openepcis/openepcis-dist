@@ -55,8 +55,8 @@
         <module>modules/openepcis-epc-digitallink-translator</module>
         <module>modules/openepcis-model-rest</module>
         <module>modules/openepcis-event-hash-generator</module>
-        <module>modules/openepcis-event-hash-generator-service</module>
-        <module>modules/openepcis-event-hash-generator-utility</module>
+        <module>modules/openepcis-event-hash-generator-cli</module>
+        <module>modules/openepcis-event-hash-generator-rest-api</module>
     </modules>
 
     <properties>
