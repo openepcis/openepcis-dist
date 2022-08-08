@@ -16,3 +16,12 @@
 [submodule "modules/openepcis-event-hash-generator-rest-api"]
 	path = modules/openepcis-event-hash-generator-rest-api
 	url = https://github.com/openepcis/openepcis-event-hash-generator-rest-api.git
+[submodule "modules/openepcis-s3"]
+	path = modules/openepcis-s3
+	url = https://github.com/openepcis/openepcis-s3.git
+[submodule "modules/openepcis-model-core"]
+	path = modules/openepcis-model-core
+	url = https://github.com/openepcis/openepcis-model-core.git
+[submodule "modules/openepcis-model-epcis"]
+	path = modules/openepcis-model-epcis
+	url = https://github.com/openepcis/openepcis-model-epcis.git
