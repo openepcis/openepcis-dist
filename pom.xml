@@ -52,6 +52,7 @@
 
     <modules>
         <module>modules/openepcis-bom</module>
+        <module>modules/openepcis-s3</module>
         <module>modules/openepcis-epc-digitallink-translator</module>
         <module>modules/openepcis-model-rest</module>
         <module>modules/openepcis-model-core</module>
@@ -59,7 +60,7 @@
         <module>modules/openepcis-event-hash-generator</module>
         <module>modules/openepcis-event-hash-generator-cli</module>
         <module>modules/openepcis-event-hash-generator-rest-api</module>
-        <module>modules/openepcis-s3</module>
+        <module>modules/openepcis-epcis-testdata-generator</module>
     </modules>
 
     <properties>
