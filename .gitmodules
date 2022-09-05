@@ -25,6 +25,3 @@
 [submodule "modules/openepcis-model-epcis"]
 	path = modules/openepcis-model-epcis
 	url = https://github.com/openepcis/openepcis-model-epcis.git
-[submodule "modules/openepcis-epcis-testdata-generator"]
-	path = modules/openepcis-epcis-testdata-generator
-	url = https://github.com/openepcis/openepcis-epcis-testdata-generator
