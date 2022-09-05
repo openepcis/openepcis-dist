@@ -60,7 +60,6 @@
         <module>modules/openepcis-event-hash-generator</module>
         <module>modules/openepcis-event-hash-generator-cli</module>
         <module>modules/openepcis-event-hash-generator-rest-api</module>
-        <module>modules/openepcis-epcis-testdata-generator</module>
     </modules>
 
     <properties>
