@@ -25,3 +25,6 @@
 [submodule "modules/openepcis-model-epcis"]
 	path = modules/openepcis-model-epcis
 	url = https://github.com/openepcis/openepcis-model-epcis.git
+[submodule "modules/epcis-format-converter"]
+	path = modules/epcis-format-converter
+	url = https://github.com/openepcis/epcis-format-converter.git
