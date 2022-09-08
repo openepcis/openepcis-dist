@@ -19,3 +19,6 @@
 [submodule "modules/openepcis-document-converter"]
 	path = modules/openepcis-document-converter
 	url = https://github.com/openepcis/openepcis-document-converter.git
+[submodule "modules/openepcis-model"]
+	path = modules/openepcis-model
+url=https://github.com/openepcis/openepcis-models.git
