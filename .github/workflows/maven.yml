@@ -25,7 +25,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+        server-id: openepcis-ossrh
+        server-username: ${{ secrets.PUB_OSSRH_USERNAME }}
+        server-password: ${{ secrets.PUB_OSSRH_PASSWORD }}
     - name: install bom
       run: mvn -B clean install -f modules/openepcis-bom/pom.xml
     - name: build other modules
-      run: mvn -B verify
+      run: mvn -B deploy
