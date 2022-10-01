@@ -33,7 +33,8 @@ jobs:
         gpg_passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
         nexus_username: ${{ secrets.OSSRH_USERNAME }}
         nexus_password: ${{ secrets.OSSRH_TOKEN }}
-        
+      run: mvn -B clean install -f modules/openepcis-bom/pom.xml 
+
     - name: install bom
       run: mvn -B clean deploy -f modules/openepcis-bom/pom.xml
     - name: build other modules
