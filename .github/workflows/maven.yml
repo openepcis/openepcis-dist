@@ -36,5 +36,6 @@ jobs:
         gpg_passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
         nexus_username: ${{ secrets.OSSRH_USERNAME }}
         nexus_password: ${{ secrets.OSSRH_TOKEN }}
+        server_id: openepcis-ossrh
 
 
