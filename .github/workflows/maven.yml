@@ -35,6 +35,6 @@ jobs:
         nexus_password: ${{ secrets.OSSRH_TOKEN }}
         
     - name: install bom
-      run: mvn -B clean install -f modules/openepcis-bom/pom.xml
+      run: mvn -B clean deploy -f modules/openepcis-bom/pom.xml
     - name: build other modules
-      run: mvn -B deploy
+      run: mvn -B clean deploy
