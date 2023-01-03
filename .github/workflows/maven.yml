@@ -26,6 +26,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: install parent pom
+      run: mvn -B clean install -f modules/openepcis-bom/pom.xml
+
     - name: Maven Publish
       uses: samuelmeuli/action-maven-publish@v1
       with:
@@ -35,6 +38,3 @@ jobs:
         nexus_username: ${{ secrets.OSSRH_USERNAME }}
         nexus_password: ${{ secrets.OSSRH_TOKEN }}
         server_id: openepcis-ossrh
-
-#    - name: install parent pom
-#      run: mvn -B clean install -f modules/openepcis-bom/pom.xml
