@@ -29,12 +29,12 @@ jobs:
     - name: install parent pom
       run: mvn -B clean install -f modules/openepcis-bom/pom.xml
 
-    - name: Maven Publish
-      uses: samuelmeuli/action-maven-publish@v1
-      with:
-        maven_goals_phases: clean verify
-        gpg_private_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-        gpg_passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
-        nexus_username: ${{ secrets.OSSRH_USERNAME }}
-        nexus_password: ${{ secrets.OSSRH_TOKEN }}
-        server_id: openepcis-ossrh
+#    - name: Maven Publish
+#      uses: samuelmeuli/action-maven-publish@v1
+#      with:
+#        maven_goals_phases: clean verify
+#        gpg_private_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+#        gpg_passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+#        nexus_username: ${{ secrets.OSSRH_USERNAME }}
+#        nexus_password: ${{ secrets.OSSRH_TOKEN }}
+#        server_id: openepcis-ossrh
