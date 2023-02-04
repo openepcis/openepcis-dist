@@ -22,3 +22,6 @@ url=https://github.com/openepcis/openepcis-models.git
 [submodule "modules/openepcis-models"]
 	path = modules/openepcis-models
 	url = https://github.com/openepcis/openepcis-models.git
+[submodule "modules/openepcis-epcis-constants"]
+	path = modules/openepcis-epcis-constants
+	url = https://github.com/openepcis/openepcis-epcis-constants.git

@@ -52,6 +52,7 @@
 
     <modules>
         <module>modules/openepcis-bom</module>
+        <module>modules/openepcis-epcis-constants</module>
         <module>modules/openepcis-s3</module>
         <module>modules/openepcis-epc-digitallink-translator</module>
         <module>modules/openepcis-models</module>
