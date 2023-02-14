@@ -25,3 +25,6 @@ url=https://github.com/openepcis/openepcis-models.git
 [submodule "modules/openepcis-epcis-constants"]
 	path = modules/openepcis-epcis-constants
 	url = https://github.com/openepcis/openepcis-epcis-constants.git
+[submodule "modules/openepcis-test-resources"]
+	path = modules/openepcis-test-resources
+	url = https://github.com/openepcis/openepcis-test-resources.git
