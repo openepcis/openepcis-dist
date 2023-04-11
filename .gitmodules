@@ -28,3 +28,6 @@ url=https://github.com/openepcis/openepcis-models.git
 [submodule "modules/openepcis-test-resources"]
 	path = modules/openepcis-test-resources
 	url = https://github.com/openepcis/openepcis-test-resources.git
+[submodule "modules/openepcis-reactive-event-publisher"]
+	path = modules/openepcis-reactive-event-publisher
+	url = https://github.com/openepcis/openepcis-reactive-event-publisher.git
