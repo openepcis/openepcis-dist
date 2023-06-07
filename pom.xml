@@ -58,10 +58,8 @@
         <module>modules/openepcis-epc-digitallink-translator</module>
         <module>modules/openepcis-models</module>
         <module>modules/openepcis-document-converter</module>
-        <!--
         <module>modules/openepcis-reactive-event-publisher</module>
         <module>modules/openepcis-event-hash-generator</module>
-        -->
     </modules>
 
     <properties>
