@@ -21,7 +21,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.openepcis</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>999-SNAPSHOT</version>
     <artifactId>openepcis-dist</artifactId>
     <packaging>pom</packaging>
     <name>openepcis-dist</name>
@@ -62,6 +62,7 @@
         <module>modules/openepcis-epc-digitallink-translator</module>
         <module>modules/openepcis-models</module>
         <module>modules/openepcis-document-converter</module>
+        <module>modules/openepcis-document-validation-service</module>
         <module>modules/openepcis-reactive-event-publisher</module>
         <module>modules/openepcis-event-hash-generator</module>
     </modules>

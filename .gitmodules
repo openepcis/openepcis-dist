@@ -31,3 +31,7 @@ url=https://github.com/openepcis/openepcis-models.git
 [submodule "modules/openepcis-reactive-event-publisher"]
 	path = modules/openepcis-reactive-event-publisher
 	url = https://github.com/openepcis/openepcis-reactive-event-publisher.git
+[submodule "modules/openepcis-document-validation-service"]
+	path = modules/openepcis-document-validation-service
+	url = https://github.com/openepcis/openepcis-document-validation-service.git
+
