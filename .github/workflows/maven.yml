@@ -27,7 +27,7 @@ jobs:
         distribution: 'temurin'
 
     - name: install parent pom
-      run: mvn -B clean install -f modules/openepcis-bom/pom.xml
+      run: mvn -B --no-transfer-progress clean install -f modules/openepcis-bom/pom.xml
 
 #    - name: Maven Publish
 #      uses: samuelmeuli/action-maven-publish@v1

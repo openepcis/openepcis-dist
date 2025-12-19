@@ -24,3 +24,5 @@ fabric.properties
 *.iml
 
 target
+.claude
+CLAUDE.md
