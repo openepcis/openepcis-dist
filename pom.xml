@@ -76,23 +76,42 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>${maven-deploy-plugin.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
         </plugins>
     </build>
     <repositories>
-    <!-- Sonatype Central snapshots -->
-    <repository>
-        <id>central-snapshots</id>
-        <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-        <snapshots>
-            <enabled>true</enabled>
-        </snapshots>
-        <releases>
-            <enabled>false</enabled>
-        </releases>
-    </repository>
+        <!-- GitLab Maven Package Registry (project 79) -->
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://code.company-group.com/api/v4/projects/79/packages/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <!-- Sonatype Central snapshots -->
+        <repository>
+            <id>central-snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
     </repositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>gitlab-maven</id>
+            <url>https://code.company-group.com/api/v4/projects/79/packages/maven</url>
+        </snapshotRepository>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://code.company-group.com/api/v4/projects/79/packages/maven</url>
+        </repository>
+    </distributionManagement>
 </project>
