@@ -21,7 +21,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.openepcis</groupId>
-    <version>999-SNAPSHOT</version>
+    <version>0.9.3</version>
     <artifactId>openepcis-dist</artifactId>
     <packaging>pom</packaging>
     <name>openepcis-dist</name>
@@ -30,7 +30,7 @@
     <parent>
         <groupId>io.openepcis</groupId>
         <artifactId>openepcis-bom</artifactId>
-        <version>999-SNAPSHOT</version>
+        <version>0.9.3</version>
     </parent>
     <licenses>
         <license>
