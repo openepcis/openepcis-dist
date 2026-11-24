@@ -32,3 +32,9 @@
 	path = modules/openepcis-document-validation-service
 	url = https://github.com/openepcis/openepcis-document-validation-service.git
 
+[submodule "modules/openepcis-core"]
+	path = modules/openepcis-core
+	url = https://github.com/openepcis/openepcis-core.git
+[submodule "modules/openepcis-rest-quarkus"]
+	path = modules/openepcis-rest-quarkus
+	url = https://github.com/openepcis/openepcis-rest-quarkus.git

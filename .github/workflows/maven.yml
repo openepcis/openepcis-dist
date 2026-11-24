@@ -26,6 +26,11 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      # The module poms find their parent openepcis-bom by coordinates, not by path, so
+      # Maven 3 needs it in the local repository before the reactor is read.
+      - name: Install the bom
+        run: ./mvnw -B --no-transfer-progress -f modules/openepcis-bom/pom.xml install -DskipTests
+
       # Maven is pinned by the wrapper (3.9.15): the runner image's Maven treats the duplicate
       # declarations some module poms still carry as errors, 3.9 reports them as warnings.
       # No credentials: the whole public stack is in this reactor and resolves from Central.
@@ -48,6 +53,11 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
+
+      # The module poms find their parent openepcis-bom by coordinates, not by path, so
+      # Maven 3 needs it in the local repository before the reactor is read.
+      - name: Install the bom
+        run: ./mvnw -B --no-transfer-progress -f modules/openepcis-bom/pom.xml install -DskipTests
 
       # 999-SNAPSHOT of every public module goes to Central's snapshot repository, which any
       # build can read without credentials. That is what lets the public repositories build
