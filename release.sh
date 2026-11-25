@@ -406,6 +406,30 @@ validate_module_state() {
 
     # Central rejects an artifact without a sources jar; a pom that switches it off was the
     # June 2026 converter failure
+    # Central rejects a published artifact whose pom has no <name> ('Project name is missing'),
+    # and Maven does not inherit <name> from the parent: the 0.9.4 failure of openepcis-core
+    local unnamed
+    unnamed=$(python3 - "${poms[@]}" <<'PY'
+import sys
+import xml.etree.ElementTree as ET
+ns = {"m": "http://maven.apache.org/POM/4.0.0"}
+for path in sys.argv[1:]:
+    root = ET.parse(path).getroot()
+    props = root.find("m:properties", ns)
+    skipped = props is not None and any(
+        (props.findtext("m:" + key, default="", namespaces=ns) or "").strip() == "true"
+        for key in ("skipNexusStagingDeployMojo", "maven.deploy.skip"))
+    if not skipped and root.find("m:name", ns) is None:
+        print(path)
+PY
+)
+    if [ -n "$unnamed" ]; then
+        log "WARNING: $module has published poms without <name>, which Central rejects:"
+        echo "$unnamed" | while read -r pom; do log "  $pom"; done
+        cd "$DIST_ROOT"
+        return 1
+    fi
+
     if grep -rq --include=pom.xml '<attach>false</attach>' . 2>/dev/null; then
         log "WARNING: $module has a pom with <attach>false</attach> (sources jar switched off)"
         cd "$DIST_ROOT"
