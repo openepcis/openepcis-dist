@@ -628,9 +628,17 @@ release_module() {
         awk "/^## \\[$RELEASE_VERSION\\]/{flag=1;next} /^## \\[/{flag=0} flag" CHANGELOG.md > "$notes_file"
         notes_cmd="--notes-file '$notes_file'"
     fi
-    execute_command "Create GitHub release" \
-        "gh release create $tag --verify-tag --title '$module $RELEASE_VERSION' $notes_cmd" \
-        || log "WARNING: GitHub release for $module not created"
+    # the tag push may already have made a release (the converter's and the hash generator's
+    # tag workflows create one); then its notes are replaced instead
+    if [ "$DRY_RUN" = false ] && gh release view "$tag" > /dev/null 2>&1; then
+        execute_command "Update GitHub release" \
+            "gh release edit $tag --title '$module $RELEASE_VERSION' $([ -n "$notes_file" ] && echo "--notes-file '$notes_file'")" \
+            || log "WARNING: GitHub release for $module not updated"
+    else
+        execute_command "Create GitHub release" \
+            "gh release create $tag --verify-tag --title '$module $RELEASE_VERSION' $notes_cmd" \
+            || log "WARNING: GitHub release for $module not created"
+    fi
     [ -n "$notes_file" ] && rm -f "$notes_file"
 
     # 7: back to main; the release commit stays reachable through the tag
