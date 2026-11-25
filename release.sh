@@ -383,6 +383,19 @@ bootstrap_model_core() {
         return 0
     fi
 
+    # model-core's parent is openepcis-bom at the release version, which exists nowhere yet:
+    # the bom is released as the first module, after this bootstrap. Install it locally first.
+    cd "modules/openepcis-bom"
+    find . -name pom.xml -type f -exec sed -i '' "s|<version>$DEV_VERSION</version>|<version>$RELEASE_VERSION</version>|g" {} +
+    local bom_rc=0
+    mvn clean install -DskipTests >> "$LOG_FILE" 2>&1 || bom_rc=1
+    git checkout -- . >> "$LOG_FILE" 2>&1
+    cd ../..
+    if [ $bom_rc -ne 0 ]; then
+        log "ERROR: openepcis-bom $RELEASE_VERSION could not be installed locally (see $LOG_FILE)"
+        return 1
+    fi
+
     cd "modules/openepcis-models"
     find . -name pom.xml -type f -exec sed -i '' "s|<version>$DEV_VERSION</version>|<version>$RELEASE_VERSION</version>|g" {} +
 
