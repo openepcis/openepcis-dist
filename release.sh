@@ -217,7 +217,8 @@ validate_module_state() {
     # nexus-staging uploads when the LAST module of the reactor runs; a deploy-skipped last
     # module uploads nothing (the other June 2026 converter failure)
     local last_module
-    last_module=$(grep -o '<module>[^<]*</module>' pom.xml | tail -1 | sed 's/<[^>]*>//g')
+    # the default module list only: the first <modules> block, not those of opt-in profiles
+    last_module=$(sed -n '/<modules>/,/<\/modules>/{p;/<\/modules>/q;}' pom.xml | sed '/<!--/,/-->/d' | grep -o '<module>[^<]*</module>' | tail -1 | sed 's/<[^>]*>//g')
     if [ -n "$last_module" ] && [ -f "$last_module/pom.xml" ] && grep -q 'maven.deploy.skip\|skipNexusStagingDeployMojo' "$last_module/pom.xml"; then
         log "WARNING: $module's last reactor module ($last_module) skips deploy; nothing would be uploaded"
         cd ../..
