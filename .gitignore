@@ -24,3 +24,5 @@ fabric.properties
 *.iml
 
 target
+# logs of release.sh
+release-*.log
