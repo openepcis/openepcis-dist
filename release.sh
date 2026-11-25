@@ -41,6 +41,9 @@ set -euo pipefail
 RELEASE_VERSION=""
 DRY_RUN=false
 DRY_RUN_DEPLOY=false
+FROM_MODULE=""
+# how long to wait for a released module to appear on Maven Central before the next one
+CENTRAL_WAIT_MINUTES=${CENTRAL_WAIT_MINUTES:-90}
 GPG_PASSPHRASE=""
 DEV_VERSION="999-SNAPSHOT"
 DIST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -69,6 +72,8 @@ MODULES=(
     "openepcis-core"
     "openepcis-rest-quarkus"
 )
+# the full list; MODULES may be cut down by --from
+ALL_MODULES=("${MODULES[@]}")
 
 ################################################################################
 # Utility Functions
@@ -522,6 +527,30 @@ dry_run_deploy_all_modules() {
     return 0
 }
 
+# --from MODULE: resume a release at MODULE. Every module before it must already be on Maven
+# Central at the release version; only MODULE and the ones after it are validated and released.
+select_from_module() {
+    local start=-1 i
+    for i in "${!MODULES[@]}"; do
+        [ "${MODULES[$i]}" = "$FROM_MODULE" ] && start=$i
+    done
+    if [ "$start" -lt 0 ]; then
+        log "ERROR: --from $FROM_MODULE is not one of: ${MODULES[*]}"
+        exit 1
+    fi
+    for i in $(seq 0 $((start - 1))); do
+        local module=${MODULES[$i]} artifact
+        artifact=$(root_artifact_id "$DIST_ROOT/modules/$module")
+        if [ "$(curl -s -o /dev/null -w '%{http_code}' "$(central_pom_url "$artifact")")" != "200" ]; then
+            log "ERROR: --from $FROM_MODULE, but $module ($artifact $RELEASE_VERSION) is not on Maven Central yet"
+            exit 1
+        fi
+        log "$module $RELEASE_VERSION already on Maven Central, skipped"
+    done
+    # release_dist records every module at its tag, the skipped ones included
+    MODULES=("${MODULES[@]:$start}")
+}
+
 validate_all_modules() {
     log "Validating all modules..."
 
@@ -556,6 +585,43 @@ validate_all_modules() {
 return_to_main() {
     git checkout -- . > /dev/null 2>&1 || true
     git checkout -q main >> "$LOG_FILE" 2>&1 || log "WARNING: could not check out main in $(pwd)"
+}
+
+# The artifactId of a module's root pom: the first thing of the module Central publishes.
+root_artifact_id() {
+    python3 - "$1/pom.xml" <<'PY'
+import sys, xml.etree.ElementTree as ET
+ns = {"m": "http://maven.apache.org/POM/4.0.0"}
+print(ET.parse(sys.argv[1]).getroot().find("m:artifactId", ns).text.strip())
+PY
+}
+
+central_pom_url() {
+    local artifact=$1
+    echo "https://repo1.maven.org/maven2/io/openepcis/$artifact/$RELEASE_VERSION/$artifact-$RELEASE_VERSION.pom"
+}
+
+# Central validates a deployment against what is already published: a module whose parent or
+# managed dependencies come from an earlier module (the bom, models, ...) is rejected ("Dependency
+# version information is missing") while that earlier module is still PUBLISHING. So the next
+# module waits until this one can be downloaded from Maven Central.
+wait_for_central() {
+    local module=$1
+    local artifact
+    artifact=$(root_artifact_id "$DIST_ROOT/modules/$module")
+    local url
+    url=$(central_pom_url "$artifact")
+    local deadline=$(( $(date +%s) + CENTRAL_WAIT_MINUTES * 60 ))
+    log "Waiting for $artifact $RELEASE_VERSION on Maven Central ($url)..."
+    while [ "$(date +%s)" -lt "$deadline" ]; do
+        if [ "$(curl -s -o /dev/null -w '%{http_code}' "$url")" = "200" ]; then
+            log "SUCCESS: $artifact $RELEASE_VERSION is on Maven Central"
+            return 0
+        fi
+        sleep 30
+    done
+    log "ERROR: $artifact $RELEASE_VERSION did not appear on Maven Central within $CENTRAL_WAIT_MINUTES minutes"
+    return 1
 }
 
 release_module() {
@@ -706,7 +772,7 @@ release_all_modules() {
 
     for i in "${!MODULES[@]}"; do
         local module=${MODULES[$i]}
-        if release_module "$module"; then
+        if release_module "$module" && { [ "$DRY_RUN" = true ] || wait_for_central "$module"; }; then
             released_modules+=("$module")
         else
             failed_modules+=("$module")
@@ -741,7 +807,7 @@ release_dist() {
     fi
 
     local module
-    for module in "${MODULES[@]}"; do
+    for module in "${ALL_MODULES[@]}"; do
         if ! execute_command "Record modules/$module at $tag" \
             "git -C modules/$module checkout -q --detach $tag && git add modules/$module"; then
             return 1
@@ -757,7 +823,7 @@ release_dist() {
 
     if [ "$DRY_RUN" = false ]; then
         git -c submodule.recurse=false checkout -q main >> "$LOG_FILE" 2>&1 || log "WARNING: could not check out main in openepcis-dist"
-        for module in "${MODULES[@]}"; do
+        for module in "${ALL_MODULES[@]}"; do
             git -C "modules/$module" checkout -q main >> "$LOG_FILE" 2>&1 || log "WARNING: could not check out main in modules/$module"
         done
     else
@@ -783,6 +849,8 @@ Options:
   --dry-run         Validate everything and print what would happen, change nothing
   --dry-run-deploy  Build and sign every module at the release version, upload nothing,
                     no commit, no tag
+  --from MODULE     Resume at MODULE after an interrupted release; the modules before it must
+                    already be on Maven Central at the release version
   --gpg-passphrase  GPG passphrase for signing
   --help            Show this help
 
@@ -831,6 +899,10 @@ main() {
                 log "DRY-RUN DEPLOY - builds and signs every module at the release version, uploads nothing"
                 shift
                 ;;
+            --from)
+                FROM_MODULE=$2
+                shift 2
+                ;;
             --gpg-passphrase)
                 GPG_PASSPHRASE=$2
                 shift 2
@@ -853,6 +925,9 @@ main() {
     fi
 
     validate_prerequisites
+    if [ -n "$FROM_MODULE" ]; then
+        select_from_module
+    fi
     validate_all_modules
 
     if [ "$DRY_RUN_DEPLOY" = true ]; then
